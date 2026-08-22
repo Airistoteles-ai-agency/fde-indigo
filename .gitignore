@@ -1,0 +1,15 @@
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+.pytest_cache/
+.pytest-tmp/
+.ruff_cache/
+*.py[cod]
+*.log
+.coverage
+htmlcov/
+
+# The supplied assessment catalog is not committed until redistribution is approved.
+data/gift-shop-catalog.csv

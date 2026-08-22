@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: fde-indigo
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:create_app --factory --host 0.0.0.0 --port $PORT
+    healthCheckPath: /healthz
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: APP_ENV
+        value: production
+      - key: CATALOG_API_KEY
+        sync: false
+      - key: CATALOG_CSV_PATH
+        value: /etc/secrets/gift-shop-catalog.csv
+      - key: PUBLIC_BASE_URL
+        sync: false

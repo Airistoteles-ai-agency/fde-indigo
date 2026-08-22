@@ -1,0 +1,9 @@
+product_id,name,category,subcategory,brand,price_eur,stock,rating,reviews_count,recipient,occasion,tags,color,material,gift_wrap,shipping_days,description
+KD-004,Espresso Moka Pot 3-cup, Kitchen and Dining ,Coffee,Bialetti,46,9,4.7,81,anyone,housewarming|birthday,practical|coffee,Silver,Aluminium,yes,2,Compact stovetop coffee maker for practical kitchens.
+KD-001,Chef's Knife 20cm,Kitchen & Dining,Knives,Wuesthof,149,16,4.8,125,anyone,birthday|christmas,chef|cooking,Silver,Steel,yes,3,Full-size chef knife for everyday food preparation.
+KD-002,Paring Knife 9cm,kitchen & dining,Knives,Wuesthof,69,8,4.6,78,anyone,birthday|christmas,knife|cooking,Silver,Steel,yes,2,Small paring knife for precise kitchen tasks.
+HL-004,Linen Fig Candle,Home and Living,Candles,Aroma House,38,0,4.4,45,her,housewarming|thank-you,decorative|scented,Green,Wax,yes,2,Fig-scented linen candle for a decorative home gift.
+KD-007,Cold Brew Carafe,Kitchen & Dining,Coffee,Hario,52,0,4.5,61,anyone,birthday|housewarming,coffee|practical,Clear,Glass,yes,2,Glass carafe for preparing cold brew coffee.
+HL-021,Herb Garden Kit,Home & Living,Plants,GreenLab,42,4,4.2,30,anyone,housewarming,garden|practical,Green,Mixed,yes,3,Indoor herb growing kit with starter pots.
+KD-024,Herb Garden Kit,Kitchen & Dining,Kitchen Garden,GreenLab,42,4,4.2,30,anyone,housewarming,garden|practical,Green,Mixed,yes,3,Indoor herb growing kit with starter pots.
+EX-001,Digital Gift Card,Experiences,Gift Cards,Gift Shop,25,999,,,anyone,,digital|flexible,,,no,0,Digital gift card delivered without physical shipping.
