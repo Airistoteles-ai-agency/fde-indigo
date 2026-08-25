@@ -9,7 +9,7 @@ grounded product discovery without adding a database, embeddings, or another LLM
 | Artifact | Status |
 | --- | --- |
 | Repository | https://github.com/Airistoteles-ai-agency/fde-indigo |
-| Public API | https://fde-indigo.onrender.com |
+| Public API | https://fde-indigo.onrender.com/docs |
 | Live OpenAPI | https://fde-indigo.onrender.com/openapi.json |
 | Automated validation | 29 tests passing; Ruff and OpenSpec validation passing |
 | Indigo agent | Configured, published and manually evaluated; reviewer URL provided with the submission |
