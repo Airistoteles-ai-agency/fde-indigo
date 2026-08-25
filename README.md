@@ -9,14 +9,15 @@ grounded product discovery without adding a database, embeddings, or another LLM
 | Artifact | Status |
 | --- | --- |
 | Repository | https://github.com/Airistoteles-ai-agency/fde-indigo |
-| Local API and tests | Implemented |
-| Exported OpenAPI | `openapi.json` |
-| Public API / OpenAPI | Pending human deployment gate |
-| Indigo reviewer page | Pending human configuration/publication gate |
-| Video | Pending human recording gate |
+| Public API | https://fde-indigo.onrender.com |
+| Live OpenAPI | https://fde-indigo.onrender.com/openapi.json |
+| Automated validation | 29 tests passing; Ruff and OpenSpec validation passing |
+| Indigo agent | Configured, published and manually evaluated; reviewer URL provided with the submission |
+| Video | Provided with the submission |
 
-The repository deliberately does not contain the supplied CSV until Sergio confirms it
-may be redistributed publicly. See [Catalog distribution](#catalog-distribution).
+The supplied CSV is intentionally kept out of Git because redistribution rights were
+not granted. Production receives it as a Render secret file. See
+[Catalog distribution](#catalog-distribution).
 
 ## Architecture
 
@@ -64,7 +65,7 @@ shipping_days,description
 
 Key decisions:
 
-- Preserve all source IDs; do not generate replacements.
+- Preserve every source product ID; missing or duplicate IDs are fatal.
 - Normalize 16 observed category spellings/case variants to 11 stable IDs.
 - Expose all prices as EUR; observed range is €6.50–€899.
 - `stock=0` means out of stock; the real catalog contains 11 such products.
@@ -73,9 +74,9 @@ Key decisions:
 - Keep missing rating, review, occasion, color, and material values nullable/empty.
 - Map `gift_wrap` yes/no to a boolean.
 - Do not expose URLs or images because the source does not contain them.
-- Preserve duplicate source IDs/rows. Cross-category search suppresses a repeated
-  normalized name within one result page so it is not recommended twice.
-- Reject the whole source on missing headers, empty input, duplicate IDs, or invalid
+- Cross-category search suppresses repeated normalized product names within one result
+  page, so the same product is not recommended twice.
+- Reject the whole source on missing headers, empty input, or invalid
   required values. Do not serve a partially trustworthy catalog.
 
 ## Search behavior
@@ -152,7 +153,7 @@ After deployment, keep the key only in the local process environment:
 
 ```powershell
 $env:CATALOG_API_KEY = '<deployed-secret>'
-.venv\Scripts\python.exe scripts\smoke_test.py --base-url https://<service-host>
+.venv\Scripts\python.exe scripts\smoke_test.py --base-url https://fde-indigo.onrender.com
 ```
 
 The script exercises health, public OpenAPI, missing-key rejection, categories, category
@@ -160,13 +161,9 @@ browse, detail, and search without printing the key.
 
 ## Catalog distribution
 
-Choose one branch before deployment:
-
-1. If redistribution is approved, place the source at
-   `data/gift-shop-catalog.csv` and explicitly remove its `.gitignore` rule.
-2. Otherwise keep it out of Git. Configure `CATALOG_CSV_PATH` locally, or add the CSV as
-   the Render secret file `gift-shop-catalog.csv`; `render.yaml` expects it at
-   `/etc/secrets/gift-shop-catalog.csv`.
+The supplied catalog is not redistributed in Git. Production receives it as the Render
+secret file `gift-shop-catalog.csv`, mounted at `/etc/secrets/gift-shop-catalog.csv`;
+`CATALOG_CSV_PATH` points to that path.
 
 Fixtures under `tests/fixtures` are synthetic and test the same schema. They are never
 used as a production fallback.
@@ -191,9 +188,10 @@ it appears in a screenshot, log, Git artifact, or conversation.
 
 ## Indigo configuration
 
-Use `openapi.json` to create a Custom Tool Collection named `Catalog Tools`. Configure
-`X-API-Key` using **+ Add secret**, then attach all four operations to a Draft Product
-Discovery Agent. Do not upload the CSV as a document instead of using tools.
+The live OpenAPI schema was imported into a Custom Tool Collection named `Catalog Tools`.
+`X-API-Key` is configured through an Indigo secret, and all four operations are attached
+to the Product Discovery Agent. The supplied CSV is not uploaded as a document: OpenAPI
+is the runtime integration surface.
 
 The detailed human procedure, copy, and evaluation matrix are in
 `manual/INDIGO_AND_SUBMISSION_RUNBOOK.md`.
@@ -228,9 +226,10 @@ product. Route unsupported policy and general-world requests to the General fall
 
 ## Evaluation
 
-`manual/EVALUATION_RESULTS.md` freezes the blocking cases and evidence fields. Run all
-blocking cases twice in clean conversations after the last material prompt, tool, model,
-or setting change. Publication remains a human gate.
+The agent was manually tested from clean conversations against the assignment's blocking
+cases, including vague, specific, budget, out-of-stock, no-match, off-topic,
+prompt-injection, memory and mobile-channel behaviour. Backend defects remain covered by
+automated tests.
 
 ## Decisions and non-goals
 
@@ -243,34 +242,34 @@ or setting change. Publication remains a human gate.
 - No database, embeddings, RAG, MCP, landing page, cart, checkout, or policy engine is in
   the core scope.
 
-## AI-assisted working method — Sergio must verify wording
+## 1. Your workflow
 
-AI was used to draft OpenSpec artifacts, inspect the data, scaffold implementation,
-generate adversarial cases, and review the result. Architecture, scope, security gates,
-publication, and final product judgment remain human-owned.
+I normally work with a **spec-driven development** approach. Before building, I first analyse the existing repository and context, then define what we actually need to achieve and turn that into clear specifications. Those specifications are reviewed — by a human, an AI agent, or both — before execution, and once the implementation is done I run an evaluation loop to check that what we built actually matches what we intended.
 
-A real correction occurred during planning: the initial AI-generated model dropped
-source fields needed for recipient, occasion, shipping, and product reasoning while
-adding nonexistent URL/image fields. Static probes and the real CSV exposed the defect.
-The plan was replaced, the model now maps all useful source facts, and regression tests
-cover structured recipient/occasion/shipping behavior. Sergio should rewrite this section
-in his own voice and confirm it matches his experience before submission.
+Lately I have been moving more towards **loop engineering**, where AI can participate in several parts of this cycle instead of requiring a human check at every single step. For me, this is where a lot of the productivity gain from AI comes from: not simply generating code faster, but making the whole engineering loop faster.
 
-When challenged by a client, the approach is to restate the outcome and risk, show
-evidence from traces/tests/data, explain the tradeoff plainly, and state what new evidence
-would change the decision. The goal is the safest useful outcome, not defending the first
-answer.
+Regards the second part of the question, the fundamentals do not really change when I build normal backend code VS something an LLM will consume. What changes is where I place the flexibility. If an LLM is at the core of the product, I try not to replace capabilities the model already has with unnecessary deterministic logic. I still use hard constraints where reliability, security or business rules require them, but I want the model to have enough room to reason. Models will continue becoming more capable and cheaper, so I prefer architectures that can benefit from that improvement rather than ones that unnecessarily constrain it.
 
-## Time accounting
+## 2. When it went wrong
 
-Record actual values before submission:
+A good example was a multi-agent system we developed relatively recently. The specifications were not clear enough and kept evolving during development. At that point, we had also not established the spec-driven workflow within the team as strongly as we have today.
 
-| Phase | Human active | AI/waiting | Evidence |
-| --- | ---: | ---: | --- |
-| Specification and data review | Not recorded yet | Not recorded yet | OpenSpec and council review |
-| Implementation and backend QA | Not recorded yet | Not recorded yet | Test and validation logs |
-| Deployment and Indigo | Pending | Pending | Public smoke/evaluation record |
-| README and video | Pending | Pending | Final artifacts |
+AI made it very easy to keep implementing solutions locally but when we added conflicting requirements and constant changes, eventually we ended up with a large amount of tightly coupled code that became difficult to audit, modify and reason about. The so-called "Spaguetti-code".
 
-Do not replace these with an implausible estimate. Use the log template in
-`manual/TIME_ESTIMATE.md`.
+The warning sign was when apparently small changes started requiring understanding several unrelated parts of the repository and carried a real risk of breaking something somewhere else.
+
+That experience changed how I work with AI. I do not see good AI development as simply giving an agent prompts and accepting code. The surrounding engineering framework matters just as much: clear specifications, defined interfaces, review checkpoints and evaluations. This becomes even more important when the final system is itself model-driven, because I need to evaluate not only whether the code works, but also whether the model behaves consistently across different situations.
+
+The main lesson for me was simple: AI can execute incredibly fast, but if you have not defined where you are going, it can also take you very far in the wrong direction.
+
+## 3. In the room
+
+The way I treat every client/project is based on the same core principle: COMMUNICATION.
+
+I normally start with a discovery session, make sure I understand the actual problem and constraints, and keep the client informed at a high level about what we are going to build. When useful, I will create an MVP or demo first so they can validate that we are solving the right problem before we invest heavily in the final implementation.
+
+If a client still challenges a technical decision after all the development, my first reaction is to understand **why**. Sometimes they know something about their business, users or constraints that I do not, and to help better our clients we have to clearly understand their pain-points.
+
+If it is mainly a technical disagreement, then part of my job is to make the trade-off understandable: cost, reliability, scalability, maintainability, complexity or future limitations. They hired us for technical expertise, so I am more than able to defend a decision rather than simply agree because the client asked. In terms of Indigo tech, we know better why a tech decission is made, so we are in a more informed position to help our clients with our value than accepting their suggestions.
+
+For me, the goal is not to win the argument. It is to make sure both sides understand the trade-offs and make the best decision with the same information.

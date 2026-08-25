@@ -1070,8 +1070,8 @@
   },
   "servers": [
     {
-      "description": "schema-export",
-      "url": "https://catalog-api.example.com"
+      "description": "production",
+      "url": "https://fde-indigo.onrender.com"
     }
   ]
 }
