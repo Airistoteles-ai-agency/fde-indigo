@@ -242,6 +242,8 @@ automated tests.
 - No database, embeddings, RAG, MCP, landing page, cart, checkout, or policy engine is in
   the core scope.
 
+
+# TASK 1: Questions regarding my ways of working
 ## 1. Your workflow
 
 I normally work with a **spec-driven development** approach. Before building, I first analyse the existing repository and context, then define what we actually need to achieve and turn that into clear specifications. Those specifications are reviewed — by a human, an AI agent, or both — before execution, and once the implementation is done I run an evaluation loop to check that what we built actually matches what we intended.
