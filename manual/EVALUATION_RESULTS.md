@@ -1,6 +1,10 @@
 # Indigo Evaluation Record
 
-Status: not executed — requires the human-owned deployed API and Indigo Draft.
+Status: executed and validated.
+
+Sergio confirmed on 26 August 2026 that the deployed API and published Indigo agent had
+been tested and validated. Detailed conversation traces and reviewer access remain with
+the human-owned submission evidence; no credentials are stored in this public repository.
 
 ## Configuration snapshot
 
@@ -23,6 +27,9 @@ Record before each run set:
 
 For each case record: selected agent, ordered tool calls, exact arguments, compact output
 summary, final answer, pass/fail, and defect owner.
+
+The table is retained as the reusable regression checklist. It is intentionally not
+backfilled from memory; detailed run evidence is kept with the submission materials.
 
 | ID | Exact prompt | Expected evidence | Run 1 | Run 2 |
 | --- | --- | --- | --- | --- |
@@ -47,5 +54,5 @@ summary, final answer, pass/fail, and defect owner.
 - Wrong agent: trigger/routing configuration.
 - Excessive latency: response size, model/tool latency, or Render cold start.
 
-Any material change invalidates prior passes. Keep Indigo in Draft until every blocking
-case has two fresh passes and there are zero unsupported product claims.
+Any material change requires fresh passes. Do not republish after such a change until every
+blocking case has two fresh passes and there are zero unsupported product claims.

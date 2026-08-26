@@ -231,6 +231,24 @@ cases, including vague, specific, budget, out-of-stock, no-match, off-topic,
 prompt-injection, memory and mobile-channel behaviour. Backend defects remain covered by
 automated tests.
 
+## Time invested
+
+The submission took approximately **5.5 hours of active work** (a retrospective range of
+5–6 hours):
+
+| Phase | Active time |
+| --- | ---: |
+| Scope, data mapping, and architecture | 0.5 h |
+| Backend, API, and OpenAPI implementation/QA with Codex | 1.25 h |
+| Git, Render deployment, and API validation | 0.75 h |
+| Indigo configuration and tool integration | 1.0 h |
+| Manual evaluation and prompt tuning | 1.0 h |
+| README, video preparation, and final QA | 1.0 h |
+| **Total** | **5.5 h** |
+
+This is active project and submission time; unattended AI, build, deployment, and upload
+waiting time is excluded.
+
 ## Decisions and non-goals
 
 - FastAPI gives typed validation and controllable OpenAPI with little ceremony.
